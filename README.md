@@ -12,8 +12,9 @@ Documentation for the "multiple nominal hierarchy spatiotemporal classification 
 Example ground truth data: 
 * species-defined habitat data can be downloaded in the form of DwC-standardized taxonomic occurrence data from OBIS+GBIF 
     * open an issue here to for code to import DwC occurrences into GEE
-* a tool for inputting "ground truth" data using a google earth engine app has been developed
-    * open an issue here to set up a meeting 
+* use a tool for collecting "ground truth" image annotations
+    * A tool in google earth engine app is being developed
+    * see also the list [satellite-image-deep-learning/annotation](https://github.com/satellite-image-deep-learning/annotation)
 
 ### 2. select input parameters
 Input pameters are spatiotemporal layers containing input data for the model.
@@ -26,6 +27,10 @@ Common inputs include:
 * temperature
 * precipitation
 * reflectance (satellite images)
+
+Additional imagery inputs can be pulled in from ERDDAP or other sources.
+Other dataset lists:
+* [corentin-dfg/Satellite-Image-Time-Series-Datasets](https://github.com/corentin-dfg/Satellite-Image-Time-Series-Datasets)
 
 ### 3. train+tweak
 This modeling paradigm develops a model for each class representing the liklihood of the class for each spatiotemporal pixel.
