@@ -19,7 +19,7 @@ Example ground truth data:
 ### 2. select input parameters
 Input pameters are spatiotemporal layers containing input data for the model.
 
-A curated spreadsheet of the "most-awesome"<sup>TM</sup> input parameters in GEE can be found in [this g-sheet](https://docs.google.com/spreadsheets/d/1iShMShmQDnrlLkf3y3MMskKloH9bq3rxSg0z-KJucaY/edit?usp=sharing).
+A curated spreadsheet of the "most-awesome"<sup>TM</sup> input parameters in GEE can be found in [this g-sheet](https://docs.google.com/spreadsheets/d/1VyBMu1hN-FpSVV7Gi6VSTS1e3gaiudj6ZqYzsuvv3zw/edit?usp=sharing).
 
 Common inputs include:
 
