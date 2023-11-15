@@ -1,0 +1,84 @@
+---
+title: "Examine Point & Create Habitat Record"
+author: "Tylar Murray"
+editor: source
+execute: 
+  echo: false
+  warning: false
+---
+Use this protocol to examine a lat,lon point and create a classification record.
+
+```{r}
+#| include: false
+
+#remotes::system_requirements("ubuntu", "20.04", package = "geojsonio")
+install.packages("librarian")
+librarian::shelf(
+  "geojsonio",
+  "ggplot2",
+  "r-spatial/rgee",
+  "tidyverse",
+)
+rgee::ee_install()
+```
+
+Auth GEE:
+```{r}
+#| eval: false
+# rgee::ee_Authenticate()
+rgee::ee_Initialize()
+```
+
+```{r}
+# Define the location (latitude and longitude)
+lat <- 27.63615563874265
+lon <-  -80.99341033321342
+
+# Define the time period (e.g., start and end dates)
+start_date <- "2020-01-01"
+end_date <- "2024-01-01"
+
+ic_id = "IDAHO_EPSCOR/TERRACLIMATE"
+```
+
+```{r}
+# Define the collection
+terraclimate <- ee$ImageCollection(ic_id) %>%
+  ee$ImageCollection$filterDate(start_date, end_date) %>%
+  ee$ImageCollection$filterBounds(ee$Geometry$Point(lon, lat))
+
+print(terraclimate$getInfo())
+
+# Do extraction ----
+ee_nc_rain <- ee_extract(
+  x = terraclimate, 
+  y = ee$Geometry$Point(lon,lat),
+  sf = FALSE,
+  scale = 1000,  # meters
+)
+
+# extraction comes back as a wide df with columns like X{img_id}_{band_id}
+# convert it to a long df
+long_df <- ee_nc_rain %>%
+  pivot_longer(everything(), names_to = "column") %>%
+  separate(col = column, into = c("img_id", "band_id"), sep = "_", remove = FALSE) %>%
+  select(-column) %>%
+  rename(value = value) %>%
+  mutate(img_id = str_replace(img_id, "X", ""))
+
+# add the dates of the images
+image_dates <- ee_get_date_ic(terraclimate) %>%
+  mutate(
+    id = str_replace(id, ".*/", ""),   # cut the ic_id out
+    time_start = as.Date(time_start)
+  ) 
+long_df <- long_df %>%
+  left_join(image_dates, by = c("img_id" = "id"))
+  
+# plot the ts
+ggplot(long_df, aes(x = time_start, y = value, color = band_id)) +
+  geom_line() +
+  labs(x = "Date", y = "Value") +
+  ggtitle("Time Series Plot by Band") +
+  theme_minimal()
+```
