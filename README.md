@@ -15,6 +15,8 @@ Example ground truth data:
 * use a tool for collecting "ground truth" image annotations
     * A tool in google earth engine app is being developed
     * see also the list [satellite-image-deep-learning/annotation](https://github.com/satellite-image-deep-learning/annotation)
+* standardize annotation data into DwC-archive-like file format
+* add the asset to the [list of DwC-archive-like-files](https://docs.google.com/spreadsheets/d/1RRC3L9dmvycJRG5f947DWAHBlZywpijYOwlJvBZ-yec/edit#gid=0)
 
 ### 2. select input parameters
 Input pameters are spatiotemporal layers containing input data for the model.
